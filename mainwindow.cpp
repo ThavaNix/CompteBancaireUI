@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include<QComboBox>
 #include<QGridLayout>
@@ -6,12 +6,13 @@
 #include<QLabel>
 #include<QLineEdit>
 #include <QPushButton>
-
+#include <QString>
 MainWindow::MainWindow(QWidget *parent)
 : QWidget(parent)
 {
 //! [1]
 QGroupBox *echoGroup = new QGroupBox(tr("Echo"));
+QGroupBox *PaveNum =   new QGroupBox( tr("PaveNum"));
 QLabel *echoLabel = new QLabel(tr("Mode:"));
 QComboBox *echoComboBox = new QComboBox;
 echoComboBox->addItem(tr("Normal"));
@@ -32,34 +33,53 @@ echoLayout->addWidget(echoLabel, 0, 0);
 echoLayout->addWidget(echoComboBox, 0, 1);
 echoLayout->addWidget(echoLineEdit, 1, 0, 1, 2);
 echoLayout->addWidget(echoLineEdit2, 2, 0, 1, 2);
-this->B0->setGeometry(50, 100, 100, 50);
-echoLayout->addWidget(B0);
+
+
+
 echoGroup->setLayout(echoLayout);
 //! [2]
 //! [3]
 QGridLayout *layout = new QGridLayout;
 layout->addWidget(echoGroup, 0, 0);// 0,0 définit la position de notre layout
+layout->addWidget(PaveNum , 1 , 0);
 setLayout(layout);
 setWindowTitle(tr("Line Edits"));// définit le titre de l'application
 
-connect(B0, SIGNAL(clicked()),this, SLOT(buttonClicked()));
+
+QGridLayout *pavNum = new QGridLayout;
+this->B0->setGeometry(50, 100, 100, 50);
+pavNum->addWidget(B0 , 0 , 1 );
+pavNum->addWidget(B1 , 0 , 2);
+pavNum->addWidget(B2 , 0 , 3);
+pavNum->addWidget(B3 , 1 , 1);
+pavNum->addWidget(B4 , 1 , 2);
+pavNum->addWidget(B5 , 1 , 3);
+pavNum->addWidget(B6 , 2 , 1);
+pavNum->addWidget(B7 , 2 , 2 );
+pavNum->addWidget(B8 , 2 , 3);
+pavNum->addWidget(B9 , 3 , 2);
+PaveNum->setLayout(pavNum);
+
 
 //! [5]
+
+connect( B0 , SIGNAL(clicked()),this, SLOT(buttonClicked()));
+connect( B1 , SIGNAL(clicked()),this, SLOT(buttonClicked()));
+connect( B2 , SIGNAL(clicked()),this, SLOT(buttonClicked()));
+connect( B3 , SIGNAL(clicked()),this, SLOT(buttonClicked()));
+connect( B4 , SIGNAL(clicked()),this, SLOT(buttonClicked()));
+connect( B5 , SIGNAL(clicked()),this, SLOT(buttonClicked()));
+connect( B6 , SIGNAL(clicked()),this, SLOT(buttonClicked()));
+connect( B7 , SIGNAL(clicked()),this, SLOT(buttonClicked()));
+connect( B8 , SIGNAL(clicked()),this, SLOT(buttonClicked()));
+connect( B9 , SIGNAL(clicked()),this, SLOT(buttonClicked()));
+
 connect(echoComboBox, QOverload<int>::of(&QComboBox::activated),
 this, &MainWindow::echoChanged);
 //! [5]
 }
 //! [3]
-//!
-//!
-//!
-//!
-//!
-//!
-//!
-//!
-//!
-//! [4]
+
 void MainWindow::echoChanged(int index)
 {
 switch (index) {
@@ -83,6 +103,9 @@ return 0;
 }
 void MainWindow::buttonClicked()
  {
-     QPushButton *button = (QPushButton *)sender();
-     emit digitClicked(button->text()[0].digitValue());
- }
+
+    QPushButton *button = (QPushButton *)sender();
+    int num_bouton = (button->text()[0].digitValue());
+    echoLineEdit2->setText(echoLineEdit2->text()+QString::number(num_bouton));
+
+}

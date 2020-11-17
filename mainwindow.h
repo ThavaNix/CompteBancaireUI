@@ -13,8 +13,16 @@ Q_OBJECT
 
 public:
 MainWindow(QWidget *parent = nullptr);
-QPushButton *B0 = new QPushButton("0");
-
+QPushButton *B0 = new QPushButton("0") ;
+QPushButton *B1 = new QPushButton("1") ;
+QPushButton *B2 = new QPushButton("2") ;
+QPushButton *B3 = new QPushButton("3") ;
+QPushButton *B4 = new QPushButton("4") ;
+QPushButton *B5 = new QPushButton("5") ;
+QPushButton *B6 = new QPushButton("6") ;
+QPushButton *B7 = new QPushButton("7") ;
+QPushButton *B8 = new QPushButton("8") ;
+QPushButton *B9 = new QPushButton("9") ;
 public slots:
 void echoChanged(int);
 int EcireDansMDP();
