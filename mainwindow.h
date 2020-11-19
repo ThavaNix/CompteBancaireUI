@@ -25,7 +25,7 @@ QPushButton *B8 = new QPushButton("8") ;
 QPushButton *B9 = new QPushButton("9") ;
 public slots:
 void echoChanged(int);
-int EcireDansMDP();
+
 void buttonClicked();
 
 private:

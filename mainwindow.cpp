@@ -34,7 +34,14 @@ echoLayout->addWidget(echoComboBox, 0, 1);
 echoLayout->addWidget(echoLineEdit, 1, 0, 1, 2);
 echoLayout->addWidget(echoLineEdit2, 2, 0, 1, 2);
 
+////////////////////////////////////////
+//if (echoLineEdit->hasFocus()){}else
+//{
+//    qDebug("Identifiant");
+//}
 
+
+/////////////////////////////////////////
 
 echoGroup->setLayout(echoLayout);
 //! [2]
@@ -98,14 +105,19 @@ break;
 }
 
 }
-int MainWindow::EcireDansMDP(){
-return 0;
-}
+
 void MainWindow::buttonClicked()
  {
 
-    QPushButton *button = (QPushButton *)sender();
+    QPushButton *button = (QPushButton *)sender() ;
     int num_bouton = (button->text()[0].digitValue());
-    echoLineEdit2->setText(echoLineEdit2->text()+QString::number(num_bouton));
+ if (echoLineEdit2->focusWidget()){
+ echoLineEdit2->setText(echoLineEdit2->text()+QString::number(num_bouton));
+
+ }
+ else if (echoLineEdit->focusWidget()) {
+      echoLineEdit->setText(echoLineEdit->text()+QString::number(num_bouton));
+ }
+
 
 }
