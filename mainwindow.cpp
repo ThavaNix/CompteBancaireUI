@@ -15,10 +15,10 @@ loginAlert->setVisible(false);
 
 idChamp = new QLineEdit;
 idChamp->setMaxLength(9);
-idChamp->setValidator(new QIntValidator(000000000, 999999999, this));
+idChamp->setValidator(new QIntValidator(0, 999999999, this));
 mdpChamp = new QLineEdit;
 mdpChamp->setMaxLength(4);
-mdpChamp->setValidator(new QIntValidator(000000000, 999999999, this));
+mdpChamp->setValidator(new QIntValidator(0, 999999999, this));
 mdpChamp->setDisabled(true);
 
 
