@@ -6,6 +6,12 @@
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QLabel>
+#include "ui_mainwindow.h"
+#include <QComboBox>
+#include <QLineEdit>
+#include <QString>
+
+
 QT_BEGIN_NAMESPACE
 class QLineEdit;
 QT_END_NAMESPACE
@@ -23,25 +29,18 @@ public slots:
 void buttonClicked();
 void echoChanged();
 void idVerification();
-void slotbConn();
+bool slotbConn();
 void slotbClose();
-//void mdpVerification();
+void mdpVerification();
 private:
-QLineEdit *echoLineEdit;
-QLineEdit *echoLineEdit2;
-QCheckBox *echoCheckBox;
+QLineEdit *idChamp;
+QLineEdit *mdpChamp;
+QCheckBox *echoMdp;
 QGroupBox *PaveNum;
 QLabel *loginAlert;
-QPushButton *B0 = new QPushButton("0") ;
-QPushButton *B1 = new QPushButton("1") ;
-QPushButton *B2 = new QPushButton("2") ;
-QPushButton *B3 = new QPushButton("3") ;
-QPushButton *B4 = new QPushButton("4") ;
-QPushButton *B5 = new QPushButton("5") ;
-QPushButton *B6 = new QPushButton("6") ;
-QPushButton *B7 = new QPushButton("7") ;
-QPushButton *B8 = new QPushButton("8") ;
-QPushButton *B9 = new QPushButton("9") ;
+
+QPushButton *pavButtons[10];
+
 QPushButton *bConn = new QPushButton("Connexion") ;
 QPushButton *bClose = new QPushButton("Fermer");
 };

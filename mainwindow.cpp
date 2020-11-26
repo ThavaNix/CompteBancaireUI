@@ -1,14 +1,6 @@
 ﻿#include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include <QComboBox>
-#include <QGridLayout>
-#include <QGroupBox>
-#include <QLabel>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QString>
-#include <QMessageBox>
-#include <QString>
+
+
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 {
 
@@ -19,33 +11,36 @@ PaveNum->setStyleSheet("*{font-size : 14px ; color : blue;}");
 
 QLabel *echoLabel = new QLabel(tr("Connexion :"));
 loginAlert = new QLabel;
+loginAlert->setVisible(false);
 
-echoLineEdit = new QLineEdit;
-echoLineEdit2 = new QLineEdit;
-echoLineEdit2->setMaxLength(3);
-echoLineEdit->setMaxLength(3);
-echoLineEdit2->setDisabled(true);
-echoLineEdit2->setVisible(false);
+idChamp = new QLineEdit;
+idChamp->setMaxLength(9);
+idChamp->setValidator(new QIntValidator(000000000, 999999999, this));
+mdpChamp = new QLineEdit;
+mdpChamp->setMaxLength(4);
+mdpChamp->setValidator(new QIntValidator(000000000, 999999999, this));
+mdpChamp->setDisabled(true);
 
-echoCheckBox = new QCheckBox("Masquer");
 
-echoCheckBox->setVisible(false);
-echoCheckBox->setCheckState(Qt::Checked);
-echoLineEdit->setStyleSheet("*{color : black}");
-echoLineEdit2->setStyleSheet("*{color : black}");
+echoMdp = new QCheckBox("Afficher");
 
-echoLineEdit->setPlaceholderText("ID");
+echoMdp->setVisible(false);
+echoMdp->setCheckState(Qt::Unchecked);
+idChamp->setStyleSheet("*{color : black}");
+mdpChamp->setStyleSheet("*{color : black}");
 
-echoLineEdit2->setPlaceholderText("MotDePasse");
-echoLineEdit2->setEchoMode(QLineEdit::Password);
+idChamp->setPlaceholderText("ID");
+
+mdpChamp->setPlaceholderText("MotDePasse");
+mdpChamp->setEchoMode(QLineEdit::Password);
 
 
 QGridLayout *echoLayout = new QGridLayout;
 
 echoLayout->addWidget(echoLabel, 0, 0);
-echoLayout->addWidget(echoLineEdit, 1, 0, 1, 2);
-echoLayout->addWidget(echoLineEdit2, 2, 0, 1, 2);
-echoLayout->addWidget(echoCheckBox,2 , 3);
+echoLayout->addWidget(idChamp, 1, 0, 1, 2);
+echoLayout->addWidget(mdpChamp, 2, 0, 1, 2);
+echoLayout->addWidget(echoMdp,2 , 3);
 
 
 
@@ -64,54 +59,30 @@ setWindowTitle(tr("Fenetre de connexion"));
 
 QGridLayout *pavNum = new QGridLayout;
 
-pavNum->addWidget(B0 , 3 ,1 );
-pavNum->addWidget(B1 , 0 , 0);
-pavNum->addWidget(B2 , 0 , 1);
-pavNum->addWidget(B3 , 0 , 2);
-pavNum->addWidget(B4 , 1 , 0);
-pavNum->addWidget(B5 , 1 , 1);
-pavNum->addWidget(B6 , 1 , 2);
-pavNum->addWidget(B7 , 2 , 0);
-pavNum->addWidget(B8 , 2 , 1);
-pavNum->addWidget(B9 , 2 , 2);
 pavNum->addWidget(bConn , 3 , 2);
 pavNum->addWidget(bClose , 3 , 0);
 pavNum->addWidget(loginAlert ,4 ,1);
 
+for (int i = 0; i < 10; ++i) {
 
-loginAlert->setVisible(false);
+    pavButtons[i] = new QPushButton(QString::number(i), this);
+    connect(pavButtons[i], SIGNAL(clicked()), this, SLOT(buttonClicked()));
+ }
+for (int i = 0; i < 9; ++i){
+   pavNum->addWidget(pavButtons[i + 1], i / 3, i % 3);
+}
+pavNum->addWidget(pavButtons[0], 3, 1);
 
+connect( bConn , SIGNAL(clicked()),this, SLOT(slotbConn()));
+connect( bClose , SIGNAL(clicked()),this, SLOT(slotbClose()));
+connect( echoMdp , SIGNAL(clicked()),this, SLOT(echoChanged()));
+connect(idChamp,SIGNAL(textChanged(QString)),this,SLOT(idVerification()));
+
+
+connect(mdpChamp,SIGNAL(textChanged(QString)),this,SLOT(mdpVerification()));
 bConn->setStyleSheet("* { background-color: #5294e2  ; color : black}");
 bClose->setStyleSheet("*{background-color: #853934 ; color : black}");
 PaveNum->setLayout(pavNum);
-
-
-
-//! [5]
-
-connect( B0 , SIGNAL(clicked()),this, SLOT(buttonClicked()));
-connect( B1 , SIGNAL(clicked()),this, SLOT(buttonClicked()));
-connect( B2 , SIGNAL(clicked()),this, SLOT(buttonClicked()));
-connect( B3 , SIGNAL(clicked()),this, SLOT(buttonClicked()));
-connect( B4 , SIGNAL(clicked()),this, SLOT(buttonClicked()));
-connect( B5 , SIGNAL(clicked()),this, SLOT(buttonClicked()));
-connect( B6 , SIGNAL(clicked()),this, SLOT(buttonClicked()));
-connect( B7 , SIGNAL(clicked()),this, SLOT(buttonClicked()));
-connect( B8 , SIGNAL(clicked()),this, SLOT(buttonClicked()));
-connect( B9 , SIGNAL(clicked()),this, SLOT(buttonClicked()));
-
-
-connect( bConn , SIGNAL(clicked()),this, SLOT(slotbConn()));
-
-connect( bClose , SIGNAL(clicked()),this, SLOT(slotbClose()));
-
-connect( echoCheckBox , SIGNAL(clicked()),this, SLOT(echoChanged()));
-
-connect(echoLineEdit,SIGNAL(textChanged(QString)),this,SLOT(idVerification()));
-
-
-//connect(echoLineEdit2,SIGNAL(textChanged(QString)),this,SLOT(mdpVerification()));
-
 
 }
 
@@ -121,32 +92,28 @@ void MainWindow::buttonClicked()
  {
     QPushButton *button = (QPushButton *)sender();
        int num_button = (button->text()[0].digitValue());
-
-
-       if(echoLineEdit2->isEnabled())
+       if(mdpChamp->isEnabled())
          {
-             echoLineEdit2->setText(echoLineEdit2->text()+QString::number(num_button));
+             mdpChamp->setText(mdpChamp->text()+QString::number(num_button));
          }
 }
 
 void MainWindow::echoChanged()
 {
-    if(echoCheckBox->isChecked()){
-     echoLineEdit2->setEchoMode(QLineEdit::Password);
+    if(!echoMdp->isChecked() == true){
+     mdpChamp->setEchoMode(QLineEdit::Password);
 }
-    else if (!echoCheckBox->isChecked()){
-     echoLineEdit2->setEchoMode(QLineEdit::Normal);
+    else if (echoMdp->isChecked() == true){
+     mdpChamp->setEchoMode(QLineEdit::Normal);
     }
 }
 
 void MainWindow::idVerification(){
-    if(echoLineEdit->text()=="000")
+    if(idChamp->text()=="000000000")
     {
-        echoLineEdit->setDisabled(true);
-        echoLineEdit->setVisible(false);
-        echoLineEdit2->setDisabled(false);
-        echoLineEdit2->setVisible(true);
-        echoCheckBox->setVisible(true);
+        idChamp->setDisabled(true);
+        mdpChamp->setDisabled(false);
+        echoMdp->setVisible(true);
         PaveNum->setVisible(true);
 
 
@@ -154,25 +121,25 @@ void MainWindow::idVerification(){
 
 }
 
-void MainWindow::slotbConn(){
+bool MainWindow::slotbConn(){
 
 
 
-    if (echoLineEdit2->text() == "000")
+    if (mdpChamp->text() == "0000")
         {
 
             loginAlert->setVisible(true);
-            loginAlert->setText("Connexion Réussi");
+            loginAlert->setText("Connexion Réussie");
             loginAlert->setStyleSheet("*{color:green}");
         }
-        else if (echoLineEdit2->text() != "000"){
+        else if (mdpChamp->text() != "0000"){
 
-        loginAlert->setVisible(true);
+           loginAlert->setVisible(true);
           loginAlert->setText("Connexion Refuser" );
           loginAlert->setStyleSheet("*{color:red}");
-          echoLineEdit2->clear();
+          mdpChamp->clear();
     }
-
+    return 1;
 
 }
 
@@ -181,7 +148,17 @@ void MainWindow::slotbConn(){
 void MainWindow::slotbClose(){
 this->close();
 }
-//void MainWindow::mdpVerification(){}
+void MainWindow::mdpVerification(){
+//   int essaies = 3;
+//   if (slotbConn() == 1){
+//        while(mdpChamp->text()!="0000" && essaies<=3){
+//                essaies++;
+//                if(essaies == 3){
+//                    this->close();
+//                }
+//        }
+//    }
+}
 
 
 
