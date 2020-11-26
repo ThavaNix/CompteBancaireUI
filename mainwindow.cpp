@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 QGroupBox *echoGroup = new QGroupBox;
 
 PaveNum = new QGroupBox("Utilisez Le Pavé Numerique Pour le MDP");
-PaveNum->setStyleSheet("*{font-size : 14px ; color : blue;}");
+PaveNum->setStyleSheet("font-size : 14px ; color : blue;");
 
 QLabel *echoLabel = new QLabel(tr("Connexion :"));
 loginAlert = new QLabel;
@@ -43,9 +43,8 @@ echoLayout->addWidget(echoMdp,2 , 3);
 
 
 echoGroup->setLayout(echoLayout);
-echoGroup->setStyleSheet("*{font-size : 14px;}");
-//! [2]
-//! [3]
+echoGroup->setStyleSheet("font-size : 14px;");
+
 QGridLayout *layout = new QGridLayout;
 layout->addWidget(echoGroup, 0, 0);
 layout->addWidget(PaveNum , 1 , 0);
@@ -82,8 +81,8 @@ connect(mdpChamp,SIGNAL(textChanged(QString)),this,SLOT(mdpVerification()));
 
 
 
-bConn->setStyleSheet("* { background-color: #5294e2  ; color : black}");
-bClose->setStyleSheet("*{background-color: #853934 ; color : black}");
+bConn->setStyleSheet(" background-color: #5294e2  ; color : black");
+bClose->setStyleSheet("background-color: #853934 ; color : black");
 PaveNum->setLayout(pavNum);
 
 }
@@ -129,13 +128,13 @@ bool MainWindow::slotbConn(){
 
             loginAlert->setVisible(true);
             loginAlert->setText("Connexion Réussie");
-            loginAlert->setStyleSheet("*{color:green}");
+            loginAlert->setStyleSheet("color:green");
         }
         else if (mdpChamp->text() != "0000"){
 
            loginAlert->setVisible(true);
           loginAlert->setText("Connexion Refuser" );
-          loginAlert->setStyleSheet("*{color:red}");
+          loginAlert->setStyleSheet("color:red");
           mdpChamp->clear();
     }
     return 1;
