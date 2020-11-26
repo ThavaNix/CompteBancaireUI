@@ -23,8 +23,6 @@ mdpChamp->setDisabled(true);
 
 
 echoMdp = new QCheckBox("Afficher");
-
-echoMdp->setVisible(false);
 echoMdp->setCheckState(Qt::Unchecked);
 idChamp->setStyleSheet("*{color : black}");
 mdpChamp->setStyleSheet("*{color : black}");
@@ -71,15 +69,19 @@ for (int i = 0; i < 10; ++i) {
 for (int i = 0; i < 9; ++i){
    pavNum->addWidget(pavButtons[i + 1], i / 3, i % 3);
 }
+
 pavNum->addWidget(pavButtons[0], 3, 1);
-
 connect( bConn , SIGNAL(clicked()),this, SLOT(slotbConn()));
+
 connect( bClose , SIGNAL(clicked()),this, SLOT(slotbClose()));
-connect( echoMdp , SIGNAL(clicked()),this, SLOT(echoChanged()));
+connect( echoMdp , SIGNAL(clicked()),this, SLOT(afficherMDP()));
+
+
 connect(idChamp,SIGNAL(textChanged(QString)),this,SLOT(idVerification()));
-
-
 connect(mdpChamp,SIGNAL(textChanged(QString)),this,SLOT(mdpVerification()));
+
+
+
 bConn->setStyleSheet("* { background-color: #5294e2  ; color : black}");
 bClose->setStyleSheet("*{background-color: #853934 ; color : black}");
 PaveNum->setLayout(pavNum);
@@ -91,14 +93,14 @@ PaveNum->setLayout(pavNum);
 void MainWindow::buttonClicked()
  {
     QPushButton *button = (QPushButton *)sender();
-       int num_button = (button->text()[0].digitValue());
-       if(mdpChamp->isEnabled())
+       QString num_button = button->text();
+       if(mdpChamp->isEnabled() == true)
          {
-             mdpChamp->setText(mdpChamp->text()+QString::number(num_button));
+             mdpChamp->setText(mdpChamp->text()+num_button);
          }
 }
 
-void MainWindow::echoChanged()
+void MainWindow::afficherMDP()
 {
     if(!echoMdp->isChecked() == true){
      mdpChamp->setEchoMode(QLineEdit::Password);
@@ -113,11 +115,8 @@ void MainWindow::idVerification(){
     {
         idChamp->setDisabled(true);
         mdpChamp->setDisabled(false);
-        echoMdp->setVisible(true);
-        PaveNum->setVisible(true);
-
-
-    }
+       PaveNum->setVisible(true);
+       }
 
 }
 

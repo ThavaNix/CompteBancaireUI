@@ -27,7 +27,7 @@ MainWindow(QWidget *parent = nullptr);
 public slots:
 
 void buttonClicked();
-void echoChanged();
+void afficherMDP();
 void idVerification();
 bool slotbConn();
 void slotbClose();
